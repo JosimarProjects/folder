@@ -21,6 +21,13 @@ const App: React.FC = () => {
       {/* Main Container */}
       <main className="w-full max-w-4xl h-[85vh] md:h-[800px] perspective-2000 relative z-10 flex flex-col items-center justify-center">
         
+        {/* Title */}
+        <div className="mb-6 md:mb-8 text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 font-hand tracking-wide">
+            Prática Integradora
+          </h1>
+        </div>
+        
         {/* Flip Card Container */}
         <div 
           className={`relative w-full h-full transition-transform duration-1000 transform-style-3d ease-in-out ${isFlipped ? 'rotate-y-180' : ''}`}

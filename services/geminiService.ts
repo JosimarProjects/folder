@@ -28,8 +28,9 @@ INSTRUÇÕES:
 let aiClient: GoogleGenAI | null = null;
 
 export const initializeGemini = () => {
-  const apiKey = process.env.API_KEY;
-  if (apiKey) {
+  // Try to get API key from window.ENV first (runtime), then fallback to process.env (build time)
+  const apiKey = (window as any).ENV?.GEMINI_API_KEY || process.env.API_KEY;
+  if (apiKey && apiKey !== '__GEMINI_API_KEY__') {
     aiClient = new GoogleGenAI({ apiKey });
   }
 };

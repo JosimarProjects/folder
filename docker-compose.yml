@@ -3,15 +3,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GEMINI_API_KEY=${GEMINI_API_KEY}
     container_name: folder-interativo-viva
     ports:
       - "8765:8765"
     environment:
       - NODE_ENV=production
-    env_file:
-      - .env.local
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     restart: unless-stopped
     networks:
       - viva-network

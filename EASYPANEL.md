@@ -1,66 +1,46 @@
 # Deploy no Easypanel - Guia Completo
 
-## Problema Identificado
+## ✅ Solução Implementada: Runtime Injection
 
-O erro "Service is not reachable" ocorre porque:
-- A aplicação React/Vite precisa da `GEMINI_API_KEY` em **build time**
-- O Easypanel passa variáveis de ambiente em **runtime**
-- O build acontece sem a chave, resultando em `undefined` no código
+O projeto agora está configurado para injetar a `GEMINI_API_KEY` em **runtime**, resolvendo o problema do Easypanel.
 
-## Solução 1: Configurar Build Args no Easypanel
+### Como funciona:
 
-Se o Easypanel suportar build arguments:
+1. **Build**: A aplicação é buildada sem a chave da API
+2. **Runtime**: Um script de entrada (`entrypoint.sh`) injeta a chave no arquivo `config.js`
+3. **Aplicação**: O código busca a chave de `window.ENV.GEMINI_API_KEY`
 
-1. Acesse o projeto no Easypanel
-2. Vá em **Settings** > **Build**
-3. Adicione em **Build Arguments**:
+## Configuração no Easypanel
+
+### Passo 1: Adicionar Variável de Ambiente
+
+1. Acesse seu projeto no Easypanel
+2. Vá em **Settings** > **Environment Variables**
+3. Adicione a variável:
    ```
-   GEMINI_API_KEY=sua_chave_da_api_gemini
+   GEMINI_API_KEY=sua_chave_da_api_gemini_aqui
    ```
-4. Salve e faça rebuild
+4. Salve
 
-## Solução 2: Commit do .env.local (Temporário)
+### Passo 2: Deploy
 
-**⚠️ ATENÇÃO**: Não recomendado para produção por questões de segurança!
-
-1. Edite o `.env.local` com sua chave real:
-   ```
-   GEMINI_API_KEY=sua_chave_real_aqui
-   ```
-
-2. Remova `.env.local` do `.gitignore` temporariamente
-
-3. Commit e push:
+1. Faça commit e push das alterações:
    ```bash
-   git add .env.local
-   git commit -m "Add env for build"
-   git push
+   git add .
+   git commit -m "Add runtime injection for API key"
+   git push origin main
    ```
 
-4. Após o deploy, **reverta** e adicione a chave nas variáveis de ambiente do Easypanel
+2. No Easypanel, clique em **Implantar** (Deploy)
 
-## Solução 3: Runtime Injection (Recomendado)
+3. Aguarde o build completar
 
-Modifique a aplicação para buscar a chave em runtime via endpoint:
+### Passo 3: Verificar
 
-1. Crie um arquivo `public/config.js`:
-   ```javascript
-   window.ENV = {
-     GEMINI_API_KEY: '__GEMINI_API_KEY__'
-   };
-   ```
-
-2. Adicione no `index.html` antes do script principal:
-   ```html
-   <script src="/config.js"></script>
-   ```
-
-3. Crie um script de entrada que substitui o placeholder:
-   ```bash
-   #!/bin/sh
-   sed -i "s|__GEMINI_API_KEY__|${GEMINI_API_KEY}|g" /app/dist/config.js
-   serve -s dist -l 8765
-   ```
+Após o deploy, a aplicação deve:
+- ✅ Iniciar sem erros
+- ✅ Mostrar no log: "Injecting GEMINI_API_KEY into config.js..."
+- ✅ Responder na URL do domínio
 
 ## Verificação de Logs
 

@@ -12,11 +12,7 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Accept build arguments
-ARG GEMINI_API_KEY
-ENV GEMINI_API_KEY=$GEMINI_API_KEY
-
-# Build the application
+# Build the application (without API key - will be injected at runtime)
 RUN npm run build
 
 # Production stage
@@ -30,8 +26,12 @@ RUN npm install -g serve
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
 
+# Copy entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Expose port
 EXPOSE 8765
 
-# Start the application
-CMD ["serve", "-s", "dist", "-l", "8765"]
+# Use entrypoint script
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -18,8 +18,20 @@ Este projeto está configurado para rodar com Docker Compose na porta **8765**.
 
 ### Construir e iniciar o container
 
+**IMPORTANTE**: A chave da API precisa estar disponível durante o build:
+
 ```bash
+# Carregar variáveis do .env.local
+export $(cat .env.local | xargs)
+
+# Construir e iniciar
 docker-compose up -d --build
+```
+
+Ou em uma linha:
+
+```bash
+export $(cat .env.local | xargs) && docker-compose up -d --build
 ```
 
 ### Parar o container
@@ -56,3 +68,14 @@ Após iniciar o container, acesse a aplicação em:
 ## Porta
 
 A aplicação está configurada para rodar na porta **8765**, uma porta menos comum para evitar conflitos.
+
+## Deploy no Easypanel
+
+No Easypanel, você precisa configurar a variável de ambiente **antes do build**:
+
+1. Vá em **Settings** > **Environment Variables**
+2. Adicione: `GEMINI_API_KEY=sua_chave_aqui`
+3. Marque a opção **"Available at build time"** (se disponível)
+4. Faça o rebuild do container
+
+**Nota**: Se o Easypanel não suportar build args diretamente, você pode precisar modificar o Dockerfile para usar um arquivo `.env` commitado (não recomendado por segurança) ou usar uma abordagem de runtime injection.

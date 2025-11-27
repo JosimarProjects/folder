@@ -23,7 +23,10 @@ const App: React.FC = () => {
         
         {/* Title */}
         <div className="mb-6 md:mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 font-hand tracking-wide">
+          <h2 className="text-xl md:text-2xl font-semibold text-orange-400 font-body tracking-wide mb-2">
+            Bacharelado em Psicologia
+          </h2>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-orange-500 font-hand tracking-wide">
             Prática Integradora
           </h1>
         </div>
@@ -43,13 +46,13 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile instruction (only shows if strictly needed, mostly handled in component) */}
-        <div className="mt-6 md:mt-8 flex gap-4">
+        {/* Flip Button */}
+        <div className="mt-4 md:mt-6 flex justify-center">
              <button 
                 onClick={handleFlip}
-                className="bg-zinc-800 hover:bg-zinc-700 text-orange-500 px-6 py-2 rounded-full font-bold uppercase text-xs tracking-widest shadow-lg border border-orange-500/20 transition-all active:scale-95"
+                className="bg-zinc-800 hover:bg-zinc-700 text-orange-500 px-8 py-3 rounded-full font-bold uppercase text-sm tracking-widest shadow-lg border border-orange-500/20 transition-all active:scale-95"
              >
-                {isFlipped ? 'Voltar' : 'Abrir Folder'}
+                {isFlipped ? '⬅️ Voltar' : 'Clique para virar ➡️'}
              </button>
         </div>
       </main>

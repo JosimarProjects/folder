@@ -30,6 +30,9 @@ COPY --from=builder /app/dist ./dist
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+# Debug: List files in dist to verify config.js
+RUN ls -la /app/dist/
+
 # Expose port
 EXPOSE 8765
 

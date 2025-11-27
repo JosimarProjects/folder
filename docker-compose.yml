@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  folder-interativo-viva:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: folder-interativo-viva
+    ports:
+      - "8765:8765"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.local
+    restart: unless-stopped
+    networks:
+      - viva-network
+
+networks:
+  viva-network:
+    driver: bridge
